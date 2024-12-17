@@ -6,6 +6,8 @@ const techController = require("./tech/tech.controller.js");
 (async () => {
   const app = express();
 
+  app.use(express.json());
+
   console.log("Connecting to MongoDB");
   await mongoose.connect("mongodb://mongodb:27017/tom", {
     useUnifiedTopology: true,

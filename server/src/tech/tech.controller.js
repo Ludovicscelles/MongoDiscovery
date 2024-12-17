@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const TechModel = require("./tech.model");
-
-const tech = new Tech(req.body);
+const { mongo } = require("mongoose");
 
 router.get("/", async (req, res) => {
   try {
     const techs = await TechModel.find();
-    res.status(200)({ result: techs });
+    res.status(200).json({ result: techs });
   } catch (error) {
     res
       .status(500)
@@ -22,24 +21,50 @@ router.post("/", async (req, res) => {
     const result = await tech.save();
     res.status(201).json({ result, message: "Techno créée" });
   } catch (error) {
-    res.status(400).json({ error: "Erreur lors de la création de la techno" });
+    console.error("Erreur lors de la création :", error.message, error); // Log complet
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await TechModel.findById(id);
+    res.status(200).json({ result });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: "Erreur lors de la récupération de la techno" });
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await Tech.findOneAndUpdate(
+
+    if (!mongo.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Id invalide" });
+    }
+
+    const result = await TechModel.findOneAndUpdate(
       {
         _id: id,
       },
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     );
+
+    console.log("body", req.body);
+
+    if (!result) {
+      return res.status(400).json({ error: "Aucune techno trouvée" });
+    }
+
     res.status(200).json({ result, message: "Techno modifiée" });
   } catch (error) {
+    console.error("Erreur lors de la modification :", error.message, error); // Log complet
     res
-      .status(400)
+      .status(500)
       .json({ error: "Erreur lors de la modification de la techno" });
   }
 });

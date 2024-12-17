@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "MongoDbQuest",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
