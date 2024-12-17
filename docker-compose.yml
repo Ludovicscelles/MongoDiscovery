@@ -2,7 +2,7 @@ services:
   server:
     build: ./server
     ports:
-      - 5000:5000
+      - 5100:5100
     command: npm run start
     volumes:
       - ./server/:/app/

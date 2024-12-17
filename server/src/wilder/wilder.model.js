@@ -14,4 +14,6 @@ const WilderSchema = new Schema({
   ],
 });
 
+
+
 module.exports = mongoose.model("wilder", WilderSchema);

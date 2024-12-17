@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const wilderController = require("./wilder/wilder.controller.js");
+const techController = require("./tech/tech.controller.js");
 
 (async () => {
   const app = express();
@@ -18,8 +19,9 @@ const wilderController = require("./wilder/wilder.controller.js");
   });
 
   app.use("/wilders", wilderController);
+  app.use("/techs", techController);
 
-  app.listen(5000, () => {
-    console.log("Server is running on http://localhost:5000");
+  app.listen(5100, () => {
+    console.log("Server is running on http://localhost:5100");
   });
 })();
